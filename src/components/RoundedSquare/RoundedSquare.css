@@ -1,0 +1,27 @@
+.rounded-square {
+    position: absolute;
+    border-radius: 10px;
+    background-color: #e0e0e0;
+    cursor: move;
+}
+
+.rounded-square::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    cursor: move;
+}
+
+.rounded-square::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background-color: #000;
+    cursor: nwse-resize;
+}

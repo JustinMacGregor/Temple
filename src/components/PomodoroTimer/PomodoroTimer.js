@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { Button, TextField, Switch, FormControlLabel } from "@material-ui/core";
+import "./PomodoroTimer.css"
 
 const PomodoroTimer = () => {
     const [isPlaying, setIsPlaying] = useState(false);
@@ -25,6 +26,17 @@ const PomodoroTimer = () => {
         }
         setIsPlaying(!isPlaying);
     };
+
+    useEffect(() => {
+        const countdownInterval = setInterval(() => {
+            document.title = formatTime(timerDuration);
+        }, 1000);
+
+        return () => {
+            clearInterval(countdownInterval);
+        };
+    }, [timerDuration]);
+
 
 
     const handleComplete = () => {
@@ -52,68 +64,91 @@ const PomodoroTimer = () => {
         let formattedTime = "";
 
         if (hours > 0) {
-            formattedTime += `${hours}h `;
-        }
-
-        if (minutes > 0 || (hours > 0 && seconds > 0)) {
+            formattedTime += `${hours}h ${minutes}m `;
+        } else if (minutes > 0) {
             formattedTime += `${minutes}m `;
         }
 
-        if (seconds >= 0 && (hours === 0 && minutes === 0)) {
+        if (seconds > 0 || (hours === 0 && minutes === 0)) {
             formattedTime += `${seconds}s`;
         }
-
 
         return formattedTime.trim();
     };
 
 
-    return (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <h1>Pomodoro Timer</h1>
-            <CountdownCircleTimer
-                isPlaying={isPlaying}
-                duration={timerDuration}
-                onComplete={handleComplete}
-                colors="#ff0000"
-                // onComplete={() => new Audio("SoundEffect.mp3").play()} // Play sound when the timer ends
-            >
-                {({ remainingTime }) => <div>{formatTime(remainingTime)}</div>}
-            </CountdownCircleTimer>
-            <Button variant="contained" color="primary" onClick={handleStartPause}>
-                {isPlaying ? "Pause" : "Start"}
-            </Button>
-            <TextField
-                label="Work Duration"
-                type="number"
-                onChange={(e) => {
-                    if (!isPlaying && e.target.value !== '') {
-                        setTimerDuration(e.target.value * 60);
-                    }
-                }}
-                InputProps={{ inputProps: { min: 1 } }}
-            />
-            <TextField
-                label="Break Duration"
-                type="number"
-                onChange={(e) => {
-                    if (!isPlaying && e.target.value !== '') {
-                        setTimerDuration(e.target.value * 60);
-                    }
-                }}
-                InputProps={{ inputProps: { min: 1 } }}
-            />
 
-            <FormControlLabel
-                control={<Switch checked={autoStartBreak} onChange={() => setAutoStartBreak(!autoStartBreak)} />}
-                label="Auto Start Break"
-            />
-            <FormControlLabel
-                control={<Switch checked={autoStartFlow} onChange={() => setAutoStartFlow(!autoStartFlow)} />}
-                label="Auto Start Flow"
-            />
+// Pomodoro.js
+
+    return (
+        <div className="container">
+            <h1>Pomodoro Timer</h1>
+            <div className="durations-container">
+                <div className="duration-field">
+                    <label>Flow</label>
+                    <input
+                        type="number"
+                        value={timerDuration / 60} // Divide by 60 to convert seconds to minutes
+                        onChange={(e) => {
+                            if (!isPlaying && e.target.value !== '') {
+                                setTimerDuration(e.target.value * 60);
+                            }
+                        }}
+                        min={1}
+                        disabled={isPlaying} // Disable the field when isPlaying is true
+                    />
+                    <div className="switch-label">
+                        <label>Auto Flow</label>
+                        <input
+                            type="checkbox"
+                            className="switch"
+                            checked={autoStartFlow}
+                            onChange={() => setAutoStartFlow(!autoStartFlow)}
+                        />
+                    </div>
+                </div>
+                <div className="duration-field">
+                    <label>Break</label>
+                    <input
+                        type="number"
+                        value={timerDuration / 60} // Divide by 60 to convert seconds to minutes
+                        onChange={(e) => {
+                            if (!isPlaying && e.target.value !== '') {
+                                setTimerDuration(e.target.value * 60);
+                            }
+                        }}
+                        min={1}
+                        disabled={isPlaying} // Disable the field when isPlaying is true
+                    />
+                    <div className="switch-label">
+                        <label>Auto Break</label>
+                        <input
+                            type="checkbox"
+                            className="switch"
+                            checked={autoStartBreak}
+                            onChange={() => setAutoStartBreak(!autoStartBreak)}
+                        />
+                    </div>
+                </div>
+            </div>
+            <div className="timer">
+                <CountdownCircleTimer
+                    isPlaying={isPlaying}
+                    duration={timerDuration}
+                    onComplete={handleComplete}
+                    colors="#ff0000"
+                >
+                    {({ remainingTime }) => <div>{formatTime(remainingTime)}</div>}
+                </CountdownCircleTimer>
+            </div>
+            <button className="button" onClick={handleStartPause}>
+                {isPlaying ? "Pause" : "Start"}
+            </button>
         </div>
     );
+
+
+
 };
 
 export default PomodoroTimer;
