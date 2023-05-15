@@ -12,14 +12,6 @@ const PomodoroTimer = () => {
     const [autoStartBreak, setAutoStartBreak] = useState(JSON.parse(localStorage.getItem('autoStartBreak')) || false);
     const [autoStartFlow, setAutoStartFlow] = useState(JSON.parse(localStorage.getItem('autoStartFlow')) || false);
 
-    const [workLog, setWorkLog] = useState(
-        parseInt(localStorage.getItem("workLog")) || 0
-    );
-
-    useEffect(() => {
-        localStorage.setItem("workLog", workLog);
-    }, [workLog]);
-
     useEffect(() => {
         localStorage.setItem('isPlaying', JSON.stringify(isPlaying));
     }, [isPlaying]);
@@ -49,10 +41,6 @@ const PomodoroTimer = () => {
     }, [autoStartFlow]);
 
     useEffect(() => {
-        localStorage.setItem("workLog", workLog);
-    }, [workLog]);
-
-    useEffect(() => {
         if (isWorkTime) {
             setTimerDuration(flowDuration);
         }
@@ -67,7 +55,6 @@ const PomodoroTimer = () => {
 
     const handleComplete = () => {
         if (isWorkTime) {
-            setWorkLog((prevWorkLog) => prevWorkLog + timerDuration);
             // Switch to break time
             setIsWorkTime(false);
             if (autoStartBreak) {
