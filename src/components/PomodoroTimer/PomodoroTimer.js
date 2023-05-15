@@ -7,8 +7,11 @@ const PomodoroTimer = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isWorkTime, setIsWorkTime] = useState(true);
     const [timerDuration, setTimerDuration] = useState(25 * 60); // Default 25 mins
+    const [flowDuration, setFlowDuration] = useState(25 * 60);
+    const [breakDuration, setBreakDuration] = useState(5 * 60);
     const [autoStartBreak, setAutoStartBreak] = useState(false);
     const [autoStartFlow, setAutoStartFlow] = useState(false);
+    const [formattedTime, setFormattedTime] = useState("");
 
     useEffect(() => {
         const workLog = localStorage.getItem("workLog");
@@ -20,41 +23,71 @@ const PomodoroTimer = () => {
         }
     }, []);
 
-    const handleStartPause = () => {
-        if (timerDuration === 0 || timerDuration === '') {
-            return; // Don't start/pause if duration is blank
+    useEffect(() => {
+        if (isWorkTime) {
+            setTimerDuration(flowDuration);
         }
-        setIsPlaying(!isPlaying);
-    };
+    }, [flowDuration, isWorkTime]);
 
     useEffect(() => {
         const countdownInterval = setInterval(() => {
-            document.title = formatTime(timerDuration);
+            const time = formatTime(timerDuration);
+            document.title = `${isWorkTime ? "Work: " : "Break: "}${time}`;
+            setFormattedTime(time);
         }, 1000);
 
         return () => {
             clearInterval(countdownInterval);
         };
-    }, [timerDuration]);
+    }, [timerDuration, isWorkTime]);
 
-
+    const handleStartPause = () => {
+        if (timerDuration === 0 || timerDuration === "") {
+            return; // Don't start/pause if duration is blank
+        }
+        setIsPlaying(!isPlaying);
+    };
 
     const handleComplete = () => {
         let workLog = JSON.parse(localStorage.getItem("workLog"));
+
         if (isWorkTime) {
             workLog.push(timerDuration);
             localStorage.setItem("workLog", JSON.stringify(workLog));
+
             // Switch to break time
             setIsWorkTime(false);
-            setTimerDuration(5 * 60); // Default 5 mins break
-            if (autoStartBreak) setIsPlaying(true);
+            if (autoStartBreak) {
+                setIsPlaying(false);
+                setTimeout(() => {
+                    setTimerDuration(breakDuration);
+                    setIsPlaying(true);
+                }, 1000); // Delay the switch to break time by 1 second
+            } else {
+                setTimerDuration(breakDuration);
+                setIsPlaying(false);
+            }
         } else {
             // Switch to work time
             setIsWorkTime(true);
-            setTimerDuration(25 * 60); // Default 25 mins work
-            if (autoStartFlow) setIsPlaying(true);
+            if (autoStartFlow) {
+                setIsPlaying(false);
+                setTimeout(() => {
+                    setTimerDuration(flowDuration);
+                    setIsPlaying(true);
+                }, 1000); // Delay the switch to work time by 1 second
+            } else {
+                setTimerDuration(flowDuration);
+                setIsPlaying(false);
+            }
         }
     };
+
+
+
+
+
+
 
     const formatTime = (timeInSeconds) => {
         const hours = Math.floor(timeInSeconds / 3600);
@@ -88,10 +121,10 @@ const PomodoroTimer = () => {
                     <label>Flow</label>
                     <input
                         type="number"
-                        value={timerDuration / 60} // Divide by 60 to convert seconds to minutes
+                        value={flowDuration / 60}
                         onChange={(e) => {
                             if (!isPlaying && e.target.value !== '') {
-                                setTimerDuration(e.target.value * 60);
+                                setFlowDuration(e.target.value * 60);
                             }
                         }}
                         min={1}
@@ -111,10 +144,10 @@ const PomodoroTimer = () => {
                     <label>Break</label>
                     <input
                         type="number"
-                        value={timerDuration / 60} // Divide by 60 to convert seconds to minutes
+                        value={breakDuration / 60}
                         onChange={(e) => {
                             if (!isPlaying && e.target.value !== '') {
-                                setTimerDuration(e.target.value * 60);
+                                setBreakDuration(e.target.value * 60);
                             }
                         }}
                         min={1}
@@ -133,6 +166,7 @@ const PomodoroTimer = () => {
             </div>
             <div className="timer">
                 <CountdownCircleTimer
+                    key={`${timerDuration}-${isWorkTime}`} // Add the key prop to force re-rendering
                     isPlaying={isPlaying}
                     duration={timerDuration}
                     onComplete={handleComplete}
@@ -140,6 +174,7 @@ const PomodoroTimer = () => {
                 >
                     {({ remainingTime }) => <div>{formatTime(remainingTime)}</div>}
                 </CountdownCircleTimer>
+
             </div>
             <button className="button" onClick={handleStartPause}>
                 {isPlaying ? "Pause" : "Start"}

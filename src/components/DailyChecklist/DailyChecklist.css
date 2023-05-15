@@ -1,0 +1,24 @@
+.daily-checklist {
+    width: 500px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.daily-checklist h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.daily-checklist div {
+    margin-bottom: 10px;
+}
+
+.daily-checklist input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.daily-checklist input[type="time"] {
+    margin-top: 10px;
+}
