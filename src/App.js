@@ -6,15 +6,10 @@ import TimeWorkedToday from "./components/TimeWorkedToday/TimeWorkedToday";
 import DailyChecklist from "./components/DailyChecklist/DailyChecklist";
 
 function App() {
-    const [positions, setPositions] = useState({});
-
-    // Load positions from local storage on component mount
-    useEffect(() => {
+    const [positions, setPositions] = useState(() => {
         const storedPositions = localStorage.getItem('componentPositions');
-        if (storedPositions) {
-            setPositions(JSON.parse(storedPositions));
-        }
-    }, []);
+        return storedPositions ? JSON.parse(storedPositions) : {};
+    });
 
     // Save positions to local storage on component update
     useEffect(() => {
