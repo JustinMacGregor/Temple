@@ -3,8 +3,13 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import './DailyChecklist.css'; // Importing Styles
 
 const DailyChecklist = () => {
-    const [checklist, setChecklist] = useState([]);
-    const [resetTime, setResetTime] = useState('00:00');
+    const storedChecklist = JSON.parse(localStorage.getItem('dailyChecklist')) || [];
+    const [checklist, setChecklist] = useState(storedChecklist);
+
+
+    const storedResetTime = localStorage.getItem('resetTime') || '00:00';
+    const [resetTime, setResetTime] = useState(storedResetTime);
+
     const [item, setItem] = useState('');
 
     const moveItem = (index, direction) => {

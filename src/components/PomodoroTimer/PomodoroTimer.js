@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { Button, TextField, Switch, FormControlLabel } from "@material-ui/core";
 import "./PomodoroTimer.css"
@@ -11,35 +11,20 @@ const PomodoroTimer = () => {
     const [breakDuration, setBreakDuration] = useState(5 * 60);
     const [autoStartBreak, setAutoStartBreak] = useState(false);
     const [autoStartFlow, setAutoStartFlow] = useState(false);
-    const [formattedTime, setFormattedTime] = useState("");
+
+    const [workLog, setWorkLog] = useState(
+        parseInt(localStorage.getItem("workLog")) || 0
+    );
 
     useEffect(() => {
-        const workLog = localStorage.getItem("workLog");
-        if (workLog) {
-            // Load work log from local storage
-        } else {
-            // Initialize work log in local storage
-            localStorage.setItem("workLog", JSON.stringify([]));
-        }
-    }, []);
+        localStorage.setItem("workLog", workLog);
+    }, [workLog]);
 
     useEffect(() => {
         if (isWorkTime) {
             setTimerDuration(flowDuration);
         }
     }, [flowDuration, isWorkTime]);
-
-    useEffect(() => {
-        const countdownInterval = setInterval(() => {
-            const time = formatTime(timerDuration);
-            document.title = `${isWorkTime ? "Work: " : "Break: "}${time}`;
-            setFormattedTime(time);
-        }, 1000);
-
-        return () => {
-            clearInterval(countdownInterval);
-        };
-    }, [timerDuration, isWorkTime]);
 
     const handleStartPause = () => {
         if (timerDuration === 0 || timerDuration === "") {
@@ -49,12 +34,8 @@ const PomodoroTimer = () => {
     };
 
     const handleComplete = () => {
-        let workLog = JSON.parse(localStorage.getItem("workLog"));
-
         if (isWorkTime) {
-            workLog.push(timerDuration);
-            localStorage.setItem("workLog", JSON.stringify(workLog));
-
+            setWorkLog((prevWorkLog) => prevWorkLog + timerDuration);
             // Switch to break time
             setIsWorkTime(false);
             if (autoStartBreak) {
@@ -83,12 +64,6 @@ const PomodoroTimer = () => {
         }
     };
 
-
-
-
-
-
-
     const formatTime = (timeInSeconds) => {
         const hours = Math.floor(timeInSeconds / 3600);
         const minutes = Math.floor((timeInSeconds % 3600) / 60);
@@ -110,10 +85,7 @@ const PomodoroTimer = () => {
         return formattedTime.trim();
     };
 
-
-
 // Pomodoro.js
-
     return (
         <div className="container">
             <div className="no-drag">

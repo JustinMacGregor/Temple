@@ -36,11 +36,11 @@ function App() {
                 </div>
             </Draggable>
 
-            <Draggable onStop={(e, data) => handleDragStop('timeWorkedToday', e, data)} defaultPosition={positions.timeWorkedToday} cancel=".no-drag">
-                <div style={{ width: '500px' }}>
-                    <TimeWorkedToday />
-                </div>
-            </Draggable>
+            {/*<Draggable onStop={(e, data) => handleDragStop('timeWorkedToday', e, data)} defaultPosition={positions.timeWorkedToday} cancel=".no-drag">*/}
+            {/*    <div style={{ width: '500px' }}>*/}
+            {/*        <TimeWorkedToday />*/}
+            {/*    </div>*/}
+            {/*</Draggable>*/}
 
             <Draggable onStop={(e, data) => handleDragStop('dailyChecklist', e, data)} defaultPosition={positions.dailyChecklist} cancel=".no-drag">
                 <div style={{ width: '500px' }}>
