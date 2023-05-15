@@ -7,70 +7,91 @@
     width: 500px;
 }
 
-.daily-checklist h1 {
-    font-size: 24px;
-    font-weight: bold;
+.daily-checklist__title {
+    text-align: center;
+    color: #495057;
     margin-bottom: 20px;
 }
 
-.daily-checklist > div {
+.daily-checklist__items {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+.daily-checklist__item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 10px;
     margin-bottom: 10px;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1);
 }
 
-.daily-checklist input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-    outline: none;
-    transition: background-color 0.3s ease;
-}
-
-.daily-checklist input[type="checkbox"]:checked {
-    background-color: #007AFF;
-    border-color: #007AFF;
-}
-
-.daily-checklist input[type="checkbox"] + label {
-    font-size: 16px;
-}
-
-.daily-checklist input[type="checkbox"] + label:hover {
-    text-decoration: underline;
-}
-
-.daily-checklist input[type="time"] {
-    appearance: none;
-    -webkit-appearance: none;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-.daily-checklist button {
-    background-color: #007AFF;
-    color: #fff;
+.daily-checklist__up-button,
+.daily-checklist__down-button,
+.daily-checklist__delete-button,
+.daily-checklist__button {
+    background-color: #007bff;
+    color: #ffffff;
     border: none;
+    padding: 5px 10px;
     border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
     cursor: pointer;
-    margin-top: 10px;
 }
 
-.daily-checklist button:hover {
-    background-color: #0062CC;
+.daily-checklist__up-button:disabled,
+.daily-checklist__down-button:disabled {
+    background-color: #6c757d;
 }
 
-.daily-checklist label {
-    font-size: 16px;
+.daily-checklist__checkbox {
+    appearance: none;
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+
+.daily-checklist__checkbox:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.daily-checklist__checkbox:checked:after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: #ffffff;
+    transform: translate(-50%, -50%);
+}
+
+.daily-checklist__label {
+    flex-grow: 1;
+    margin: 0 10px;
+    color: #495057;
+}
+
+.daily-checklist__input,
+.daily-checklist__reset-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+}
+
+.daily-checklist__reset-label {
+    display: block;
     margin-bottom: 5px;
+    color: #495057;
 }

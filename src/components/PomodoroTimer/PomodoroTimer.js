@@ -95,6 +95,7 @@ const PomodoroTimer = () => {
         const seconds = timeInSeconds % 60;
 
         let formattedTime = "";
+        console.log(localStorage)
 
         if (hours > 0) {
             formattedTime += `${hours}h ${minutes}m `;

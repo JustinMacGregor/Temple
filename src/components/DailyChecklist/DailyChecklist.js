@@ -7,6 +7,13 @@ const DailyChecklist = () => {
     const [resetTime, setResetTime] = useState('00:00');
     const [item, setItem] = useState('');
 
+    const moveItem = (index, direction) => {
+        const newChecklist = [...checklist];
+        const [item] = newChecklist.splice(index, 1);
+        newChecklist.splice(index + direction, 0, item);
+        setChecklist(newChecklist);
+    };
+
     // Load checklist from localStorage on component mount
     useEffect(() => {
         const storedChecklist = localStorage.getItem('dailyChecklist');
@@ -73,44 +80,43 @@ const DailyChecklist = () => {
         <div className="daily-checklist">
             <h1 className="daily-checklist__title">Daily Checklist</h1>
             <div className="no-drag">
-                <DragDropContext onDragEnd={handleOnDragEnd}>
-                    <Droppable droppableId="checklist" isDropDisabled={false}>
-                        {(provided) => (
-                            <ul className="daily-checklist__items" ref={provided.innerRef} {...provided.droppableProps}>
-                                {checklist.map(({ text, checked }, index) => (
-                                    text !== undefined && checked !== undefined ? (
-                                        <Draggable key={`item-${index}`} draggableId={`item-${index}`} index={index}>
-                                            {(provided) => (
-                                                <li
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                    ref={provided.innerRef}
-                                                >
-                                                    <div className="daily-checklist__item">
-                                                        <input
-                                                            className="daily-checklist__checkbox"
-                                                            type="checkbox"
-                                                            checked={checked}
-                                                            onChange={() => toggleItem(index)}
-                                                        />
-                                                        <label className="daily-checklist__label">{text}</label>
-                                                        <button
-                                                            className="daily-checklist__delete-button"
-                                                            onClick={() => deleteItem(index)}
-                                                        >
-                                                            Delete
-                                                        </button>
-                                                    </div>
-                                                </li>
-                                            )}
-                                        </Draggable>
-                                    ) : null
-                                ))}
-                                {provided.placeholder}
-                            </ul>
-                        )}
-                    </Droppable>
-                </DragDropContext>
+                <ul className="daily-checklist__items">
+                    {checklist.map(({ text, checked }, index) => (
+                        text !== undefined && checked !== undefined ? (
+                            <li key={`item-${index}`}>
+                                <div className="daily-checklist__item">
+                                    <button
+                                        className="daily-checklist__up-button"
+                                        disabled={index === 0}
+                                        onClick={() => moveItem(index, -1)}
+                                    >
+                                        ↑
+                                    </button>
+                                    <button
+                                        className="daily-checklist__down-button"
+                                        disabled={index === checklist.length - 1}
+                                        onClick={() => moveItem(index, 1)}
+                                    >
+                                        ↓
+                                    </button>
+                                    <input
+                                        className="daily-checklist__checkbox"
+                                        type="checkbox"
+                                        checked={checked}
+                                        onChange={() => toggleItem(index)}
+                                    />
+                                    <label className="daily-checklist__label">{text}</label>
+                                    <button
+                                        className="daily-checklist__delete-button"
+                                        onClick={() => deleteItem(index)}
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </li>
+                        ) : null
+                    ))}
+                </ul>
                 <input
                     className="daily-checklist__input"
                     value={item}
