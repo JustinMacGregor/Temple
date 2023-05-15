@@ -115,70 +115,72 @@ const PomodoroTimer = () => {
 
     return (
         <div className="container">
-            <h1>Pomodoro Timer</h1>
-            <div className="durations-container">
-                <div className="duration-field">
-                    <label>Flow</label>
-                    <input
-                        type="number"
-                        value={flowDuration / 60}
-                        onChange={(e) => {
-                            if (!isPlaying && e.target.value !== '') {
-                                setFlowDuration(e.target.value * 60);
-                            }
-                        }}
-                        min={1}
-                        disabled={isPlaying} // Disable the field when isPlaying is true
-                    />
-                    <div className="switch-label">
-                        <label>Auto Flow</label>
+            <div className="no-drag">
+                <h1>Pomodoro Timer</h1>
+                <div className="durations-container">
+                    <div className="duration-field">
+                        <label>Flow</label>
                         <input
-                            type="checkbox"
-                            className="switch"
-                            checked={autoStartFlow}
-                            onChange={() => setAutoStartFlow(!autoStartFlow)}
+                            type="number"
+                            value={flowDuration / 60}
+                            onChange={(e) => {
+                                if (!isPlaying && e.target.value !== '') {
+                                    setFlowDuration(e.target.value * 60);
+                                }
+                            }}
+                            min={1}
+                            disabled={isPlaying} // Disable the field when isPlaying is true
                         />
+                        <div className="switch-label">
+                            <label>Auto Flow</label>
+                            <input
+                                type="checkbox"
+                                className="switch"
+                                checked={autoStartFlow}
+                                onChange={() => setAutoStartFlow(!autoStartFlow)}
+                            />
+                        </div>
+                    </div>
+                    <div className="duration-field">
+                        <label>Break</label>
+                        <input
+                            type="number"
+                            value={breakDuration / 60}
+                            onChange={(e) => {
+                                if (!isPlaying && e.target.value !== '') {
+                                    setBreakDuration(e.target.value * 60);
+                                }
+                            }}
+                            min={1}
+                            disabled={isPlaying} // Disable the field when isPlaying is true
+                        />
+                        <div className="switch-label">
+                            <label>Auto Break</label>
+                            <input
+                                type="checkbox"
+                                className="switch"
+                                checked={autoStartBreak}
+                                onChange={() => setAutoStartBreak(!autoStartBreak)}
+                            />
+                        </div>
                     </div>
                 </div>
-                <div className="duration-field">
-                    <label>Break</label>
-                    <input
-                        type="number"
-                        value={breakDuration / 60}
-                        onChange={(e) => {
-                            if (!isPlaying && e.target.value !== '') {
-                                setBreakDuration(e.target.value * 60);
-                            }
-                        }}
-                        min={1}
-                        disabled={isPlaying} // Disable the field when isPlaying is true
-                    />
-                    <div className="switch-label">
-                        <label>Auto Break</label>
-                        <input
-                            type="checkbox"
-                            className="switch"
-                            checked={autoStartBreak}
-                            onChange={() => setAutoStartBreak(!autoStartBreak)}
-                        />
-                    </div>
-                </div>
-            </div>
-            <div className="timer">
-                <CountdownCircleTimer
-                    key={`${timerDuration}-${isWorkTime}`} // Add the key prop to force re-rendering
-                    isPlaying={isPlaying}
-                    duration={timerDuration}
-                    onComplete={handleComplete}
-                    colors="#ff0000"
-                >
-                    {({ remainingTime }) => <div>{formatTime(remainingTime)}</div>}
-                </CountdownCircleTimer>
+                <div className="timer">
+                    <CountdownCircleTimer
+                        key={`${timerDuration}-${isWorkTime}`} // Add the key prop to force re-rendering
+                        isPlaying={isPlaying}
+                        duration={timerDuration}
+                        onComplete={handleComplete}
+                        colors="#ff0000"
+                    >
+                        {({ remainingTime }) => <div>{formatTime(remainingTime)}</div>}
+                    </CountdownCircleTimer>
 
+                </div>
+                <button className="button" onClick={handleStartPause}>
+                    {isPlaying ? "Pause" : "Start"}
+                </button>
             </div>
-            <button className="button" onClick={handleStartPause}>
-                {isPlaying ? "Pause" : "Start"}
-            </button>
         </div>
     );
 

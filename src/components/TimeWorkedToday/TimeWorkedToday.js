@@ -34,22 +34,24 @@ const TimeWorkedToday = () => {
 
     return (
         <div className="container">
-            <h1 className="heading">Time Worked Today</h1>
-            <p className="time">{formatTime(workTimeToday)}</p>
-            <div className="input-container">
-                <label htmlFor="workGoalInput" className="label">Set Work Goal (minutes):</label>
-                <input
-                    id="workGoalInput"
-                    type="number"
-                    min="0"
-                    value={workGoal}
-                    onChange={handleSetWorkGoal}
-                    className="input"
-                />
+            <div className="no-drag">
+                <h1 className="heading">Time Worked Today</h1>
+                <p className="time">{formatTime(workTimeToday)}</p>
+                <div className="input-container">
+                    <label htmlFor="workGoalInput" className="label">Set Work Goal (minutes):</label>
+                    <input
+                        id="workGoalInput"
+                        type="number"
+                        min="0"
+                        value={workGoal}
+                        onChange={handleSetWorkGoal}
+                        className="input"
+                    />
+                </div>
+                <progress className="progress" value={workTimeToday} max={workGoal * 60} />
+                <p className="progress-text">{`${Math.round(workProgress)}% completed`}</p>
+                <button onClick={handleViewWorkLog} className="button">View Work Log</button>
             </div>
-            <progress className="progress" value={workTimeToday} max={workGoal * 60} />
-            <p className="progress-text">{`${Math.round(workProgress)}% completed`}</p>
-            <button onClick={handleViewWorkLog} className="button">View Work Log</button>
         </div>
     );
 

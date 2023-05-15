@@ -1,24 +1,76 @@
 .daily-checklist {
-    width: 500px;
-    margin: auto;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+    background-color: #fff;
     padding: 20px;
-    border: 1px solid #ccc;
     border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 500px;
 }
 
 .daily-checklist h1 {
-    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
     margin-bottom: 20px;
 }
 
-.daily-checklist div {
+.daily-checklist > div {
+    display: flex;
+    align-items: center;
     margin-bottom: 10px;
 }
 
 .daily-checklist input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
     margin-right: 10px;
+    outline: none;
+    transition: background-color 0.3s ease;
+}
+
+.daily-checklist input[type="checkbox"]:checked {
+    background-color: #007AFF;
+    border-color: #007AFF;
+}
+
+.daily-checklist input[type="checkbox"] + label {
+    font-size: 16px;
+}
+
+.daily-checklist input[type="checkbox"] + label:hover {
+    text-decoration: underline;
 }
 
 .daily-checklist input[type="time"] {
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    font-size: 16px;
     margin-top: 10px;
+}
+
+.daily-checklist button {
+    background-color: #007AFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.daily-checklist button:hover {
+    background-color: #0062CC;
+}
+
+.daily-checklist label {
+    font-size: 16px;
+    margin-bottom: 5px;
 }
