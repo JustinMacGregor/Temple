@@ -4,17 +4,49 @@ import { Button, TextField, Switch, FormControlLabel } from "@material-ui/core";
 import "./PomodoroTimer.css"
 
 const PomodoroTimer = () => {
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [isWorkTime, setIsWorkTime] = useState(true);
-    const [timerDuration, setTimerDuration] = useState(25 * 60); // Default 25 mins
-    const [flowDuration, setFlowDuration] = useState(25 * 60);
-    const [breakDuration, setBreakDuration] = useState(5 * 60);
-    const [autoStartBreak, setAutoStartBreak] = useState(false);
-    const [autoStartFlow, setAutoStartFlow] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(JSON.parse(localStorage.getItem('isPlaying')) || false);
+    const [isWorkTime, setIsWorkTime] = useState(JSON.parse(localStorage.getItem('isWorkTime')) || true);
+    const [timerDuration, setTimerDuration] = useState(JSON.parse(localStorage.getItem('timerDuration')) || 25 * 60);
+    const [flowDuration, setFlowDuration] = useState(JSON.parse(localStorage.getItem('flowDuration')) || 25 * 60);
+    const [breakDuration, setBreakDuration] = useState(JSON.parse(localStorage.getItem('breakDuration')) || 5 * 60);
+    const [autoStartBreak, setAutoStartBreak] = useState(JSON.parse(localStorage.getItem('autoStartBreak')) || false);
+    const [autoStartFlow, setAutoStartFlow] = useState(JSON.parse(localStorage.getItem('autoStartFlow')) || false);
 
     const [workLog, setWorkLog] = useState(
         parseInt(localStorage.getItem("workLog")) || 0
     );
+
+    useEffect(() => {
+        localStorage.setItem("workLog", workLog);
+    }, [workLog]);
+
+    useEffect(() => {
+        localStorage.setItem('isPlaying', JSON.stringify(isPlaying));
+    }, [isPlaying]);
+
+    useEffect(() => {
+        localStorage.setItem('isWorkTime', JSON.stringify(isWorkTime));
+    }, [isWorkTime]);
+
+    useEffect(() => {
+        localStorage.setItem('timerDuration', JSON.stringify(timerDuration));
+    }, [timerDuration]);
+
+    useEffect(() => {
+        localStorage.setItem('flowDuration', JSON.stringify(flowDuration));
+    }, [flowDuration]);
+
+    useEffect(() => {
+        localStorage.setItem('breakDuration', JSON.stringify(breakDuration));
+    }, [breakDuration]);
+
+    useEffect(() => {
+        localStorage.setItem('autoStartBreak', JSON.stringify(autoStartBreak));
+    }, [autoStartBreak]);
+
+    useEffect(() => {
+        localStorage.setItem('autoStartFlow', JSON.stringify(autoStartFlow));
+    }, [autoStartFlow]);
 
     useEffect(() => {
         localStorage.setItem("workLog", workLog);
